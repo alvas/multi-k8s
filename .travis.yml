@@ -1,0 +1,22 @@
+sudo: required
+services:
+    - docker
+
+before_install:
+    - docker build -t alvasli/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+    - docker run -e CI=ture alvasli/react-test npm test
+
+after_success:
+    - docker build -t alvasli/multi-client ./client
+    - docker build -t alvasli/multi-nginx ./nginx
+    - docker build -t alvasli/multi-server ./server
+    - docker build -t alvasli/multi-worker ./worker
+    # log in to docker cli
+    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+    # take image and push them to docker hub
+    - docker push alvasli/multi-client
+    - docker push alvasli/multi-nginx
+    - docker push alvasli/multi-server
+    - docker push alvasli/multi-worker
