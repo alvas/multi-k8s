@@ -20,3 +20,17 @@ after_success:
     - docker push alvasli/multi-nginx
     - docker push alvasli/multi-server
     - docker push alvasli/multi-worker
+
+
+deploy:
+    edge: true
+    provider: elasticbeanstalk
+    region: us-east-2
+    app: multi-docker
+    env: MultiDocker-env-1
+    bucket_name: elasticbeanstalk-us-east-2-757913907021
+    bucket_path: docker-multi
+    on:
+        branch: master
+    access_key_id: $AWS_ACCESS_KEY
+    secret_access_key: $AWS_SECRET_KEY
