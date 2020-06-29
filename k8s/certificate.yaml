@@ -1,0 +1,20 @@
+apiVersion: certmanager.k8s.io/v1alpha1
+kind: Certificate
+metadata:
+    name: alvasli-com-tls
+spec:
+    secretName: alvasli-com
+    issuerRef:
+        name: letsencrypt-prod
+        kind: ClusterIssuer
+    commonName: alvasli.com
+    dnsNames:
+        - alvasli.com
+        - www.alvasli.com
+    acme:
+        config:
+            - http01:
+                ingressClass: nginx
+              domains:
+                  - alvasli.com
+                  - www.alvasli.com
